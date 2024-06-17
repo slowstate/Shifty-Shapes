@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://x5jbnesb1myy"]
+
+[ext_resource type="Script" path="res://scripts/shape_lower_boundary.gd" id="1_vpvef"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uga5k"]
+size = Vector2(1920, 1)
+
+[node name="ShapeLowerBoundary" type="Area2D"]
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("1_vpvef")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_uga5k")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

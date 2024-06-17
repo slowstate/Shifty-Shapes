@@ -1,0 +1,63 @@
+[gd_scene load_steps=6 format=3 uid="uid://cq0ptjud2gmq0"]
+
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_70ddf"]
+[ext_resource type="PackedScene" uid="uid://c1ob2cod14dqi" path="res://scenes/player.tscn" id="1_u2gxc"]
+[ext_resource type="PackedScene" uid="uid://x5jbnesb1myy" path="res://scenes/shape_lower_boundary.tscn" id="3_r1opo"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vvgpd"]
+normal = Vector2(-1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_k4ssv"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_70ddf")
+
+[node name="Background" type="ColorRect" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5000.0
+offset_top = -5000.0
+offset_right = 5000.0
+offset_bottom = 5000.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.168627, 0.0588235, 0.329412, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Player" parent="." instance=ExtResource("1_u2gxc")]
+position = Vector2(3, 235)
+collision_mask = 6
+
+[node name="Camera2D" type="Camera2D" parent="."]
+scale = Vector2(2, 2)
+
+[node name="LeftWorldBoundary" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWorldBoundary"]
+position = Vector2(-572, -1)
+rotation = 3.14159
+shape = SubResource("WorldBoundaryShape2D_vvgpd")
+
+[node name="RightWorldBoundary" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWorldBoundary"]
+position = Vector2(573, 0)
+rotation = -1.5708
+shape = SubResource("WorldBoundaryShape2D_k4ssv")
+
+[node name="ShapeLowerBoundary" parent="." instance=ExtResource("3_r1opo")]
+position = Vector2(34, 373)
+collision_mask = 4
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="area_shape_entered" from="ShapeLowerBoundary" to="Player" method="_on_shape_lower_boundary_area_shape_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
